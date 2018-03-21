@@ -1,4 +1,4 @@
-## 0.2.0
+## 0.2.1
 
 Add lazy loading of the script. Should no longer require the
 {{content-for}} injection into the whole app.
