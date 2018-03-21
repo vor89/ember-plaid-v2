@@ -12,6 +12,13 @@ export default Component.extend({
   tagName: 'button',
   label: DEFAULT_LABEL,
 
+  // Link action Parameters to pass into component via view
+  onSuccess: null,
+  onOpen: null,
+  onLoad: null,
+  onExit: null,
+  onError: null,
+
   // Link Parameters to pass into component via config file
   // Complete documentation: https://plaid.com/docs/api/#parameter-reference
   clientName: null,
@@ -33,12 +40,31 @@ export default Component.extend({
       onSuccess: this._onSuccess.bind(this),
       onExit: this._onExit.bind(this)
     });
-    this._link = Plaid.create(options);
+
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.async = true;
+      script.src = 'https://cdn.plaid.com/link/v2/stable/link-initialize.js';
+      script.onload = resolve;
+      script.onerror = reject;
+      document.getElementsByTagName('head')[0].appendChild(script);
+    })
+      .then(() => {
+        this._link = window.Plaid.create(options);
+      })
+      .catch(() => {
+        this.get('_onError')();
+      })
   },
 
   click() {
     this.send('clicked');
     this._link.open();
+  },
+
+  _onError() {
+    this.send('errored');
   },
 
   _onLoad() {
@@ -69,6 +95,12 @@ export default Component.extend({
     exited(error, metadata) {
       if (this.get('onExit')){
         this.get('onExit')(error, metadata);
+      }
+    },
+
+    errored() {
+      if (this.get('onError')){
+        this.get('onError')();
       }
     },
 
