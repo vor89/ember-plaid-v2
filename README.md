@@ -63,6 +63,9 @@ Or
 ## Installation
 * `git clone <repository-url>` this repository
 * `cd ember-plaid-v2`
+* install bower through brew
+* `bower install ember`
+
 * `yarn install`
 
 ## Running
