@@ -42,6 +42,7 @@ export default Component.extend({
       onEvent: this._onEvent.bind(this),
     });
     this.get('plaid').injectScript();
+
   },
 
   click() {
