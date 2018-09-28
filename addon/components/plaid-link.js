@@ -1,7 +1,5 @@
-/* global Plaid:false */
-// Sets Plaid as a global read-only variable for eslint
-
 import Component from '@ember/component';
+import RSVP from 'rsvp';
 import layout from '../templates/components/plaid-link';
 
 const OPTIONS = ['clientName', 'env', 'key', 'product', 'webhook', 'token'];
@@ -18,6 +16,7 @@ export default Component.extend({
   onLoad() {},
   onExit() {},
   onError() {},
+  onEvent() {},
 
   // Link Parameters to pass into component via config file
   // Complete documentation: https://plaid.com/docs/api/#parameter-reference
@@ -31,17 +30,16 @@ export default Component.extend({
   // Private
   _link: null,
 
-  // TODO: Implement onEvent callback
-
   init() {
     this._super(...arguments);
     const options = Object.assign(this.getProperties(OPTIONS), {
       onLoad: this._onLoad.bind(this),
       onSuccess: this._onSuccess.bind(this),
-      onExit: this._onExit.bind(this)
+      onExit: this._onExit.bind(this),
+      onEvent: this._onEvent.bind(this),
     });
 
-    return new Ember.RSVP.Promise((resolve, reject) => {
+    return new RSVP.Promise((resolve, reject) => {
       const script = document.createElement('script');
       script.type = 'text/javascript';
       script.async = true;
@@ -79,9 +77,11 @@ export default Component.extend({
     this.send('succeeded', token, metadata);
   },
 
-  actions: {
-    // Send closure actions passed into component
+  _onEvent: function(eventName, metadata) {
+    this.send('eventEmitted', eventName, metadata);
+  },
 
+  actions: { // Send closure actions passed into component, if available
     clicked() {
       this.get('onOpen')();
     },
@@ -100,6 +100,10 @@ export default Component.extend({
 
     succeeded(token, metadata) {
       this.get('onSuccess')(token, metadata);
+    },
+
+    eventEmitted(eventName, metadata) {
+      this.get('onEvent')(eventName, metadata);
     }
   }
 });
