@@ -1,6 +1,9 @@
 {{#plaid-link id="link-plaid-button"
-  onSuccess=(action "nextStep")
-  onOpen=(action "openedLink")
-  onExit=(action "exited")}}
+  onError=(action "onError")
+  onOpen=(action "onOpen")
+  onLoad=(action "onLoad")
+  onEvent=(action "onEvent")
+  onSuccess=(action "onSuccess")
+  onExit=(action "onExit")}}
   Click to launch Plaid Link Component
 {{/plaid-link}}
