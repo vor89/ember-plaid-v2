@@ -13,11 +13,11 @@ export default Component.extend({
   label: DEFAULT_LABEL,
 
   // Link action Parameters to pass into component via view
-  onSuccess: null,
-  onOpen: null,
-  onLoad: null,
-  onExit: null,
-  onError: null,
+  onSuccess() {},
+  onOpen() {},
+  onLoad() {},
+  onExit() {},
+  onError() {},
 
   // Link Parameters to pass into component via config file
   // Complete documentation: https://plaid.com/docs/api/#parameter-reference
@@ -79,35 +79,27 @@ export default Component.extend({
     this.send('succeeded', token, metadata);
   },
 
-  actions: { // Send closure actions passed into component, if available
+  actions: {
+    // Send closure actions passed into component
+
     clicked() {
-      if (this.get('onOpen')) {
-        this.get('onOpen')();
-      }
+      this.get('onOpen')();
     },
 
     loaded() {
-      if (this.get('onLoad')){
-        this.get('onLoad')();
-      }
+      this.get('onLoad')();
     },
 
     exited(error, metadata) {
-      if (this.get('onExit')){
-        this.get('onExit')(error, metadata);
-      }
+      this.get('onExit')(error, metadata);
     },
 
     errored() {
-      if (this.get('onError')){
-        this.get('onError')();
-      }
+      this.get('onError')();
     },
 
     succeeded(token, metadata) {
-      if (this.get('onSuccess')) {
-        this.get('onSuccess')(token, metadata);
-      }
+      this.get('onSuccess')(token, metadata);
     }
   }
 });
