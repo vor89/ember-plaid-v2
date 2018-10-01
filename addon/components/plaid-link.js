@@ -49,8 +49,8 @@ export default Component.extend({
     this.get('plaid').open(this._options).catch(this._onError.bind(this));
   },
 
-  _onError() {
-    this.send('errored');
+  _onError(err) {
+    this.send('errored', err);
   },
 
   _onLoad() {
@@ -88,9 +88,9 @@ export default Component.extend({
       }
     },
 
-    errored() {
+    errored(err) {
       if (this.get('onError')){
-        this.get('onError')();
+        this.get('onError')(err);
       }
     },
 
