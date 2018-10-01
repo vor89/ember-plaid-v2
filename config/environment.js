@@ -8,7 +8,7 @@ module.exports = function(/* environment, appConfig */) {
       clientName: null,
       product: 'auth',
       key: 'test_key',
-      env: 'sandbox' // temporary change just to see if things work
+      env: 'sandbox'
     }
   };
 };

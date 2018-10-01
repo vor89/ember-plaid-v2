@@ -1,24 +1,26 @@
 import Component from '@ember/component';
+import { A } from '@ember/array';
 
 export default Component.extend({
+  events: A(),
   actions: {
     onError(err) {
-      console.log(`onError called with err ${JSON.stringify(err, ['message', 'arguments', 'type', 'name'])}`);
+      this.get('events').pushObject(`onError called with err ${JSON.stringify(err, ['message', 'arguments', 'type', 'name'])}`);
     },
     onOpen() {
-      console.log('onOpen called');
+      this.get('events').pushObject('onOpen called');
     },
     onLoad() {
-      console.log('onLoad called');
+      this.get('events').pushObject('onLoad called');
     },
     onEvent(eventName, metadata) {
-      console.log(`onEvent called with eventName ${eventName}, metadata ${JSON.stringify(metadata)}`);
+      this.get('events').pushObject(`onEvent called with eventName ${eventName}, metadata ${JSON.stringify(metadata)}`);
     },
     onSuccess(token, metadata) {
-      console.log(`onSuccess called with token ${token}, metadata ${JSON.stringify(metadata)}`);
+      this.get('events').pushObject(`onSuccess called with token ${token}, metadata ${JSON.stringify(metadata)}`);
     },
     onExit(error, metadata) {
-      console.log(`onExit called with error ${error}, metadata ${JSON.stringify(metadata)}`);
+      this.get('events').pushObject(`onExit called with error ${error}, metadata ${JSON.stringify(metadata)}`);
     },
   }
 });
