@@ -1,9 +1,8 @@
 import Component from '@ember/component';
-import RSVP from 'rsvp';
 import layout from '../templates/components/plaid-link';
 import { inject as service } from '@ember/service';
 
-const OPTIONS = ['clientName', 'env', 'key', 'product', 'webhook', 'token'];
+const OPTIONS = ['clientName', 'env', 'key', 'product', 'webhook', 'token', 'apiVersion'];
 const DEFAULT_LABEL = 'Link Bank Account'; // Displayed on button if no block is passed to component
 
 export default Component.extend({
@@ -28,6 +27,7 @@ export default Component.extend({
   product: null,
   webhook: null,
   token: null,
+  apiVersion: 'v2',
 
   // Private
   _link: null,
@@ -41,15 +41,12 @@ export default Component.extend({
       onExit: this._onExit.bind(this),
       onEvent: this._onEvent.bind(this),
     });
-    this.get('plaid').injectScript();
-
+    this.get('plaid').injectScript().catch(this._onError.bind(this));
   },
 
   click() {
     this.send('clicked');
-    this.get('plaid').open(this._options)
-    //this._link = window.Plaid.create(this._options);
-    //this._link.open();
+    this.get('plaid').open(this._options).catch(this._onError.bind(this));
   },
 
   _onError() {
