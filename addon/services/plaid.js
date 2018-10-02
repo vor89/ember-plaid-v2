@@ -6,10 +6,11 @@ export default Service.extend({
   isInjected: false,
   plaidPromise: null,
 
-  /** This method loads the Plaid the script. It can be safely called multiple times. If the script
-   *    fails to load and the method is called again, the method will reattempt to load script.
+  /**
+   * This method loads the Plaid the script. It can be safely called multiple times. If the script
+   *   fails to load and the method is called again, the method will reattempt to load script.
    * @returns {Promise} a promise which resolves when the Plaid script loads and rejects when it
-   *    does not.
+   *   does not.
    * @public
    */
   injectScript() {
@@ -37,11 +38,12 @@ export default Service.extend({
     }
   },
 
-  /** This method serves as a proxy to the Plaid link object open method. If it the Plaid script
-   *    isn't loaded, it will try to the script first.
+  /**
+   * This method serves as a proxy to the Plaid link object open method. If it the Plaid script
+   *   isn't loaded, it will try to the script first.
    * @param {object} [options] the parameters to pass to Plaid.create
    * @returns {Promise} a promise which resolves when the Plaid script loads and rejects when it
-   *    does not. A resolve does not mean the user has linked their bank account.
+   *   does not. A resolve does not mean the user has linked their bank account.
    * @public
    */
   open(options) {
